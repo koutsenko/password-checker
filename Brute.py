@@ -12,11 +12,18 @@ sites = [
 ]
 reqs_per_site = 100
 
-def request(site, count):
-    for tryout in range(1, count+1):
+def request(site, tryout):
+    try:
         response = requests.get(site)
         print('№', tryout, 'GET', site, response.status_code, len(response.text), 'bytes')
+    except:
+        print('№', tryout, 'GET', site, 'something get wrong')
 
 
-for site in sites:
-    Thread(target=request, args=(site, reqs_per_site)).start()
+def main():
+    for site in sites:
+        for tryout in range(1, reqs_per_site+1):
+            Thread(target=request, args=(site, tryout)).start()
+
+if __name__ == '__main__':
+    main()
